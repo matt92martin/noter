@@ -107,24 +107,28 @@ class Noter:
 
 
 def get_options():
-    opt = argparse.ArgumentParser(add_help=None, usage='Help')
-    opt.add_argument("-h", "--help", action="store_true")
+    help_text = """\n
+``Example of note header
+Example of note body/code
+(Can be multiple lines)
+See: [noter.txt] for more examples
+"""
+    opt = argparse.ArgumentParser(usage=help_text)
+    # opt.add_argument("-h", "--help", action="store_true")
     opt.add_argument("-f", "--file", type=str)
     opt.add_argument("-t", "--threshold", type=float, default=0.75)
     opt.add_argument("search", type=str)
-    return opt
+    return opt.parse_args()
 
 def print_help(opt):
-    print sys.exit(opt.print_help())
+    print opt.print_help()
+    sys.exit(0)
 
 
 if __name__ == '__main__':
     try:
         o = get_options()
-        options = o.parse_args()
-        if options.help:
-            print_help(o)
-        noter = Noter(options)
+        noter = Noter(o)
         noter.main()
         sys.exit(0)
     except KeyboardInterrupt, e:
