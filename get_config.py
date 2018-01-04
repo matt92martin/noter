@@ -65,12 +65,13 @@ def get_user(conn, user):
         c.execute("SELECT user, location FROM noter WHERE user=? ", [user])
 
         userinfo = c.fetchone()
-        noter_exists = file_exists(userinfo[1])
-        if userinfo and noter_exists:
-            return userinfo
+        if userinfo:
+            noter_exists = file_exists(userinfo[1])
+            if noter_exists:
+                return userinfo
 
-        if not noter_exists:
-            clear_user(conn, user)
+            if not noter_exists:
+                clear_user(conn, user)
 
         userinfo = create_user(conn, user)
         return userinfo
